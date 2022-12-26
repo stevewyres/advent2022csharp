@@ -30,17 +30,22 @@ public class HomeController : Controller
 
         var elfTotals = items
             .TrimEnd()
+            // split the elfs into first dimension of array
             .Split($"\r\n\r\n")
+            // now split with second dimension of array (items per elf)
             .Select(x => x.Split("\r\n"))
+            // select and add up the totals for each elf
             .Select(ids => new
             {
                 summation = ids.Sum(a => int.Parse(a))
             })
+            // order so the largest at the end
             .OrderBy(x => x.summation)
+            // then take the final three which will be added up to get the correct result
             .TakeLast(3);
 
         var total = 0;
-
+        // add up the final three items
         foreach (var item in elfTotals)
         {
             total += item.summation;
